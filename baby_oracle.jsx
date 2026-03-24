@@ -112,7 +112,7 @@ const SHORT_MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct
 
 function addDays(d, n) { const r = new Date(d); r.setDate(r.getDate() + n); return r; }
 function fmtDate(d) { return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }); }
-function fmtShort(d) { return d.toLocaleDateString("en-US", { month: "short", day: "numeric" }); }
+function fmtShort(d) { return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }); }
 
 // ═══════════════════════════════════════════════════════
 // Ad slot component (placeholder until AdSense approved)
@@ -269,6 +269,7 @@ export default function App() {
           <h1 style={styles.title}>Baby Oracle</h1>
           <p style={styles.subtitle}>chinese gender chart · sun sign divination</p>
           <p style={styles.disclaimer}>for entertainment only · accuracy not guaranteed by the cosmos</p>
+          <p style={styles.lunarNote}>This chart uses <strong>lunar age</strong> (your western age + 1), the traditional Chinese method of counting age.</p>
         </div>
 
         {/* Mode Toggle */}
@@ -306,7 +307,7 @@ export default function App() {
             )}
             {result && !result.outOfRange && (
               <div style={styles.preview}>
-                Lunar age: <strong>{result.lunarAge}</strong>
+                Lunar age: <strong>{result.lunarAge}</strong> <span style={{ opacity: 0.4, fontSize: "11px" }}>(western {result.lunarAge - 1})</span>
                 <span style={{ margin: "0 10px", opacity: 0.3 }}>·</span>
                 Month: <strong>{result.conceptionMonthName}</strong>
               </div>
@@ -331,7 +332,7 @@ export default function App() {
               <div style={{ ...styles.cardValue, color: result.gender === "Girl" ? "#e88da6" : "#7ab0e0" }}>
                 {result.gender}
               </div>
-              <div style={styles.cardDetail}>lunar age {result.lunarAge} × {result.conceptionMonthName} conception</div>
+              <div style={styles.cardDetail}>lunar age {result.lunarAge} (western {result.lunarAge - 1}) × {result.conceptionMonthName} conception</div>
             </div>
             <div style={{ ...styles.card, borderColor: ELEMENT_COLORS[result.sign.element] }}>
               <div style={{ ...styles.bigSymbol, color: ELEMENT_COLORS[result.sign.element] }}>{result.sign.symbol}</div>
@@ -452,7 +453,7 @@ export default function App() {
                             {fmtShort(w.startDate)}{days > 1 ? ` – ${fmtShort(w.endDate)}` : ""}
                           </div>
                           <div style={{ fontSize: "11px", opacity: 0.35, marginTop: "1px" }}>
-                            {days} day{days !== 1 ? "s" : ""} · lunar age {w.lunarAge}
+                            {days} day{days !== 1 ? "s" : ""} · lunar age {w.lunarAge} (western {w.lunarAge - 1})
                           </div>
                         </div>
                         <div style={{ fontSize: "16px", opacity: 0.2, alignSelf: "center" }}>→</div>
@@ -575,7 +576,7 @@ export default function App() {
                     {correct ? "It was right!" : `Actually: ${pastActualGender}`}
                   </div>
                   <div style={{ ...styles.cardDetail, marginTop: "10px" }}>
-                    lunar age {pastResult.lunarAge} × {SHORT_MONTHS[pastResult.month - 1]} conception
+                    lunar age {pastResult.lunarAge} (western {pastResult.lunarAge - 1}) × {SHORT_MONTHS[pastResult.month - 1]} conception
                     <br />estimated conception: {fmtDate(pastResult.conceptionDate)}
                   </div>
                 </div>
@@ -716,6 +717,7 @@ const styles = {
   },
   subtitle: { fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase", margin: "0 0 5px", opacity: 0.5, fontWeight: 300 },
   disclaimer: { fontSize: "10px", letterSpacing: "1.5px", textTransform: "uppercase", margin: 0, opacity: 0.25, fontStyle: "italic" },
+  lunarNote: { fontSize: "11px", margin: "8px 0 0", opacity: 0.35, lineHeight: 1.5, fontStyle: "italic", maxWidth: "360px", marginLeft: "auto", marginRight: "auto" },
 
   modeToggle: {
     display: "flex", gap: "2px", marginBottom: "24px",
